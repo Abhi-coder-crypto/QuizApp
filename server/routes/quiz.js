@@ -69,7 +69,7 @@ router.get('/questions', authMiddleware, async (req, res) => {
 });
 
 // Submit answers & store result
-// Submit answers only once
+// Submit answers only once per user
 router.post('/submit', authMiddleware, async (req, res) => {
   try {
     const { answers } = req.body;
@@ -77,35 +77,61 @@ router.post('/submit', authMiddleware, async (req, res) => {
 
     const user = await User.findById(req.user.id);
     
-    // 🔥 Restrict to one attempt
+    // 🔥 Restrict to one attempt - check if user has already submitted
     if (user.scores && user.scores.length > 0) {
       return res.status(403).json({
-        message: "You have already completed the quiz. Only one attempt allowed."
+        message: "You have already completed the quiz. Only one attempt allowed.",
+        score: user.scores[0].score,
+        total: user.scores[0].total
       });
     }
 
     let score = 0;
+    let correctAnswers = 0;
+    let wrongAnswers = 0;
 
+    // Calculate score: +2 for correct, -1 for incorrect, only for answered questions
     answers.forEach(a => {
       const q = questions[a.questionIndex];
-      if (q && a.answerIndex === q.correctIndex) score += 2;
-      else score -= 1;
+      if (q && a.answerIndex === q.correctIndex) {
+        score += 2;
+        correctAnswers++;
+      } else {
+        score -= 1;
+        wrongAnswers++;
+      }
     });
 
-    // Save FIRST and ONLY attempt
+    const maxScore = questions.length * 2; // 30 * 2 = 60
+
+    // Save FIRST and ONLY attempt. Store both `rawAnswers` (new) and `answers` (legacy)
     user.scores = [{
-      score,
-      total: questions.length * 2,
-      rawAnswers: answers
+      score: Math.max(0, score), // Ensure score doesn't go negative
+      total: maxScore,
+      correctAnswers,
+      wrongAnswers,
+      answeredQuestions: answers.length,
+      date: new Date(),
+      rawAnswers: answers,
+      // keep legacy field for compatibility with older documents
+      answers: answers
     }];
 
     await user.save();
 
-    res.json({ score, total: questions.length * 2 });
+    console.log(`✅ Quiz submitted for ${user.email} - Score: ${Math.max(0, score)}/${maxScore} (${correctAnswers} correct, ${wrongAnswers} wrong)`);
+
+    res.json({ 
+      score: Math.max(0, score), 
+      total: maxScore,
+      correctAnswers,
+      wrongAnswers,
+      answeredQuestions: answers.length
+    });
 
   } catch (e) {
-    console.log(e);
-    res.status(500).json({ message: 'Server error' });
+    console.error('❌ Quiz submission error:', e);
+    res.status(500).json({ message: 'Server error during quiz submission' });
   }
 });
 
