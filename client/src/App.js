@@ -3,7 +3,7 @@ import WelcomePage from './components/WelcomePage.js';
 import LoginForm from './components/LoginForm.js';
 import QuizPage from './components/QuizPage.js';
 import ResultPage from './components/ResultPage.js';
-import { getToken } from './api.js';
+import { getToken, checkStatus } from './api.js';
 import './styles.css';
 
 export default function App() {
@@ -11,9 +11,30 @@ export default function App() {
   const [stage, setStage] = useState('welcome');
   const [result, setResult] = useState(null);
   const [isReturningUser, setIsReturningUser] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (getToken()) setStage('quiz');
+    async function verifySession() {
+      const savedToken = getToken();
+      if (savedToken) {
+        const status = await checkStatus();
+        if (status.valid) {
+          if (status.hasCompletedQuiz) {
+            localStorage.removeItem('token');
+            setToken(null);
+            setStage('welcome');
+          } else {
+            setStage('quiz');
+          }
+        } else {
+          localStorage.removeItem('token');
+          setToken(null);
+          setStage('welcome');
+        }
+      }
+      setLoading(false);
+    }
+    verifySession();
   }, []);
 
   function handleNext() {
@@ -38,6 +59,17 @@ export default function App() {
     setResult(null);
     setIsReturningUser(false);
     setStage('welcome');
+  }
+
+  if (loading) {
+    return (
+      <div className="login-overlay">
+        <div className="login-card" style={{ textAlign: 'center', padding: '40px' }}>
+          <span className="spinner"></span>
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
   }
 
   return (

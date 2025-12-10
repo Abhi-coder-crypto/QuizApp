@@ -150,4 +150,41 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.get('/status', async (req, res) => {
+  const auth = req.headers.authorization;
+  if (!auth) return res.status(401).json({ message: 'No token' });
+  
+  const token = auth.split(' ')[1];
+  try {
+    const payload = jwt.verify(token, JWT_SECRET);
+    const user = await User.findById(payload.id);
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
+    const hasCompletedQuiz = user.scores && user.scores.length > 0;
+    const quizResult = hasCompletedQuiz ? {
+      score: user.scores[0].score,
+      total: user.scores[0].total,
+      correctAnswers: user.scores[0].correctAnswers,
+      wrongAnswers: user.scores[0].wrongAnswers,
+      timeTaken: user.scores[0].timeTaken,
+      date: user.scores[0].date
+    } : null;
+    
+    res.json({ 
+      valid: true,
+      hasCompletedQuiz,
+      quizResult,
+      user: {
+        email: user.email,
+        doctorName: user.doctorName
+      }
+    });
+  } catch (err) {
+    return res.status(401).json({ message: 'Invalid token', valid: false });
+  }
+});
+
 module.exports = router;

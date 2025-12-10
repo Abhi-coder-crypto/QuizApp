@@ -35,6 +35,7 @@ function LoginForm({ onLogin }) {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [existingUserResult, setExistingUserResult] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -84,9 +85,8 @@ function LoginForm({ onLogin }) {
       }
 
       if (data.hasCompletedQuiz && data.quizResult) {
-        onLogin({
-          token: data.token || null,
-          hasCompletedQuiz: true,
+        setExistingUserResult({
+          token: data.token,
           quizResult: data.quizResult
         });
         return;
@@ -254,16 +254,43 @@ function LoginForm({ onLogin }) {
 
           {error && <div className="error-message">{error}</div>}
 
-          <button type="submit" className="submit-btn" disabled={loading}>
-            {loading ? (
-              <>
-                <span className="spinner"></span>
-                Please wait...
-              </>
-            ) : (
-              'Submit & Start Quiz'
-            )}
-          </button>
+          {existingUserResult ? (
+            <div className="existing-user-section">
+              <div className="existing-user-message">
+                This team has already completed the quiz!
+              </div>
+              <button 
+                type="button" 
+                className="submit-btn check-score-btn"
+                onClick={() => onLogin({
+                  token: existingUserResult.token,
+                  hasCompletedQuiz: true,
+                  quizResult: existingUserResult.quizResult
+                })}
+              >
+                Check Score
+              </button>
+              <button 
+                type="submit" 
+                className="submit-btn" 
+                disabled={true}
+                style={{ opacity: 0.5, cursor: 'not-allowed', marginTop: '10px' }}
+              >
+                Submit & Start Quiz
+              </button>
+            </div>
+          ) : (
+            <button type="submit" className="submit-btn" disabled={loading}>
+              {loading ? (
+                <>
+                  <span className="spinner"></span>
+                  Please wait...
+                </>
+              ) : (
+                'Submit & Start Quiz'
+              )}
+            </button>
+          )}
         </form>
       </div>
     </div>

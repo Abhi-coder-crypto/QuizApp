@@ -28,3 +28,17 @@ export const submitAnswers = async (answers, timeTaken) => {
   });
   return res.json();
 };
+
+export const checkStatus = async () => {
+  const token = getToken();
+  if (!token) return { valid: false };
+  
+  try {
+    const res = await fetch(`${BASE_URL}/api/auth/status`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return res.json();
+  } catch (err) {
+    return { valid: false };
+  }
+};
