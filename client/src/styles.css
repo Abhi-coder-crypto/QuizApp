@@ -30,8 +30,8 @@ body {
   bottom: 0;
   background: #e8f4fc;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
   padding: 20px;
   overflow-y: auto;
 }
@@ -43,7 +43,7 @@ body {
   padding: 30px 40px;
   width: 100%;
   max-width: 520px;
-  margin: 20px auto;
+  margin: 0 auto;
 }
 
 .login-header {
