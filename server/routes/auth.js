@@ -54,7 +54,21 @@ router.post('/login', async (req, res) => {
 
     const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, { expiresIn: '7d' });
 
-    res.json({ token, user });
+    const hasCompletedQuiz = user.scores && user.scores.length > 0;
+    const quizResult = hasCompletedQuiz ? {
+      score: user.scores[0].score,
+      total: user.scores[0].total,
+      correctAnswers: user.scores[0].correctAnswers,
+      wrongAnswers: user.scores[0].wrongAnswers,
+      date: user.scores[0].date
+    } : null;
+
+    res.json({ 
+      token, 
+      user,
+      hasCompletedQuiz,
+      quizResult
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error' });

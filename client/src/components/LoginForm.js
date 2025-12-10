@@ -30,7 +30,11 @@ function LoginForm({ onLogin }) {
       const data = await login(form);
       if (data.token) {
         setToken(data.token);
-        onLogin(data.token);
+        onLogin({
+          token: data.token,
+          hasCompletedQuiz: data.hasCompletedQuiz,
+          quizResult: data.quizResult
+        });
       } else {
         setError(data.message || 'Login failed');
       }
