@@ -368,7 +368,19 @@ body {
 }
 
 .rules-section {
-  margin-bottom: 24px;
+  margin: 24px 0;
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.rules-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #667eea;
 }
 
 .preliminary-title {
@@ -376,6 +388,29 @@ body {
   font-weight: 700;
   color: #1a1a2e;
   margin-bottom: 20px;
+}
+
+.register-title {
+  color: #1a1a2e;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.eligibility {
+  color: #1a1a2e;
+  font-size: 15px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.team-note-main {
+  color: #667eea;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .rules-list {

@@ -78,13 +78,11 @@ function LoginForm({ onLogin }) {
 
       const data = await login(formData);
       
-      // Check if either doctor has already attempted
       if (data.alreadyAttempted && !data.hasCompletedQuiz) {
         setError(data.message || 'One of the doctors has already attempted the quiz.');
         return;
       }
 
-      // Check if team has already completed quiz - show their result
       if (data.hasCompletedQuiz && data.quizResult) {
         onLogin({
           token: data.token || null,
@@ -116,15 +114,6 @@ function LoginForm({ onLogin }) {
   return (
     <div className="login-overlay">
       <div className="login-card">
-        <div className="login-header">
-          <img src="/napcon_logo.jpg" alt="NAPCON 2025" className="napcon-logo" />
-          <h2 className="register-title">Team Registration for PG Quiz!</h2>
-          <p className="eligibility">
-            <strong>Eligibility Criteria:</strong> MD/DNB/Diploma respiratory diseases <strong>(PG students)</strong>
-          </p>
-          <p className="team-note">Each team will be composed of two PGs from same institute</p>
-        </div>
-
         <form className="login-form" onSubmit={submit}>
           <div className="team-section">
             <h3 className="section-title">Institute Details</h3>
