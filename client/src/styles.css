@@ -198,11 +198,11 @@ body {
   .login-card {
     padding: 24px;
   }
-  
+
   .form-row-inline {
     grid-template-columns: 1fr;
   }
-  
+
   .login-header h1 {
     font-size: 24px;
   }
@@ -415,8 +415,9 @@ body {
 
 .rules-list {
   font-size: 18px;
-  line-height: 2;
   color: #333;
+  margin-left: 16px;
+  line-height: 1.6;
 }
 
 .rules-list p {
@@ -480,11 +481,11 @@ body {
   .welcome-card {
     padding: 24px;
   }
-  
+
   .preliminary-title {
     font-size: 24px;
   }
-  
+
   .rules-list {
     font-size: 15px;
   }
@@ -569,8 +570,13 @@ body {
 }
 
 @keyframes pulse {
-  from { transform: scale(1); }
-  to { transform: scale(1.05); }
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.05);
+  }
 }
 
 .timer-icon {
@@ -779,17 +785,17 @@ body {
   .quiz-container {
     padding: 16px;
   }
-  
+
   .quiz-topbar {
     flex-direction: column;
     gap: 12px;
   }
-  
+
   .scoring-info {
     flex-wrap: wrap;
     gap: 12px;
   }
-  
+
   .question-text {
     font-size: 16px;
   }

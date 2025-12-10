@@ -130,8 +130,8 @@ function LoginForm({ onLogin }) {
             </div>
 
             <div className="form-group">
-              <label>State</label>
-              <select name="state" value={teamForm.state} onChange={updateTeam}>
+              <label>State <span className="required">*</span></label>
+              <select name="state" value={teamForm.state} onChange={updateTeam} required>
                 <option value="">Select state</option>
                 {INDIAN_STATES.map(state => (
                   <option key={state} value={state}>{state}</option>
@@ -140,21 +140,23 @@ function LoginForm({ onLogin }) {
             </div>
 
             <div className="form-group">
-              <label>City</label>
+              <label>City <span className="required">*</span></label>
               <input 
                 name="city" 
                 value={teamForm.city} 
                 onChange={updateTeam}
+                required
               />
             </div>
 
             <div className="form-group">
-              <label>Pincode</label>
+              <label>Pincode <span className="required">*</span></label>
               <input 
                 name="pincode" 
                 value={teamForm.pincode} 
                 onChange={updateTeam} 
                 maxLength="6"
+                required
               />
             </div>
           </div>
@@ -277,7 +279,7 @@ function LoginForm({ onLogin }) {
                 disabled={true}
                 style={{ opacity: 0.5, cursor: 'not-allowed', marginTop: '10px' }}
               >
-                Submit & Start Quiz
+                Start Quiz
               </button>
             </div>
           ) : (
