@@ -290,7 +290,7 @@ function LoginForm({ onLogin }) {
                   Please wait...
                 </>
               ) : (
-                'Submit & Start Quiz'
+                'Start Quiz'
               )}
             </button>
           )}
