@@ -111,7 +111,7 @@ router.post('/submit', authMiddleware, async (req, res) => {
 
     // Save FIRST and ONLY attempt
     user.scores = [{
-      score: Math.max(0, score),
+      score: score,
       total: maxScore,
       correctAnswers,
       wrongAnswers,
@@ -125,10 +125,10 @@ router.post('/submit', authMiddleware, async (req, res) => {
 
     await user.save();
 
-    console.log(`✅ Quiz submitted for ${user.email} - Score: ${Math.max(0, score)}/${maxScore} (${correctAnswers} correct, ${wrongAnswers} wrong, ${unattempted} unattempted) Time: ${timeTaken}s`);
+    console.log(`✅ Quiz submitted for ${user.email} - Score: ${score}/${maxScore} (${correctAnswers} correct, ${wrongAnswers} wrong, ${unattempted} unattempted) Time: ${timeTaken}s`);
 
     res.json({ 
-      score: Math.max(0, score), 
+      score: score, 
       total: maxScore,
       correctAnswers,
       wrongAnswers,
