@@ -25,8 +25,7 @@ function QuizPage({ onFinish }) {
 
   useEffect(() => {
     if (!questions.length) return;
-    
-    // Start total time tracking
+
     if (!totalTimerRef.current) {
       totalTimerRef.current = setInterval(() => {
         if (startTimeRef.current) {
@@ -38,7 +37,6 @@ function QuizPage({ onFinish }) {
     startTimer();
 
     return () => clearInterval(timerRef.current);
-    // eslint-disable-next-line
   }, [currentIdx, questions]);
 
   useEffect(() => {
@@ -88,16 +86,37 @@ function QuizPage({ onFinish }) {
     }
   }
 
+  // 🔥 UPDATED FUNCTION (Correct + Wrong + Unattempted Included)
   async function finishQuiz() {
     clearInterval(timerRef.current);
     clearInterval(totalTimerRef.current);
-    
+
     const timeTaken = startTimeRef.current 
       ? Math.floor((Date.now() - startTimeRef.current) / 1000)
       : totalTimeElapsed;
-    
+
     const res = await submitAnswers(answers, timeTaken);
-    onFinish({ ...res, timeTaken });
+
+    const correctAnswers = answers.filter(a => {
+      const q = questions[a.questionIndex];
+      return q.correctOption === a.answerIndex;
+    }).length;
+
+    const wrongAnswers = answers.filter(a => {
+      const q = questions[a.questionIndex];
+      return q.correctOption !== a.answerIndex;
+    }).length;
+
+    const unattempted = questions.length - answers.length;
+
+    // Send proper result to ResultPage
+    onFinish({
+      ...res,
+      timeTaken,
+      correctAnswers,
+      wrongAnswers,
+      unattempted
+    });
   }
 
   function formatTime(seconds) {
@@ -116,7 +135,7 @@ function QuizPage({ onFinish }) {
       </div>
     </div>
   );
-  
+
   if (!questions.length) return (
     <div className="quiz-overlay">
       <div className="quiz-container">
@@ -190,3 +209,4 @@ function QuizPage({ onFinish }) {
 }
 
 export default QuizPage;
+
