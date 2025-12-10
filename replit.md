@@ -31,6 +31,11 @@ The server runs on port 5000 and serves both the API endpoints and the built Rea
 - `PORT` - Server port (defaults to 5000)
 
 ## Recent Changes
+- 2025-12-10: Added Welcome Page and Team Registration
+  - Created WelcomePage component with logo, Preliminary Round rules, note, and Next button
+  - Updated LoginForm to collect info for two doctors (team registration)
+  - Updated User model and auth route to support team-based data
+  - App flow: Welcome -> Login (Team Registration) -> Quiz -> Result
 - 2025-12-10: Configured for Replit environment
   - Updated client API to use relative URLs
   - Updated server to bind to 0.0.0.0
