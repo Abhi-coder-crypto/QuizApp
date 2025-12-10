@@ -5,8 +5,6 @@ const User = require('../models/User');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 
-// POST /api/auth/login
-// Creates or updates a user by email and returns a token + user
 router.post('/login', async (req, res) => {
   try {
     const {
@@ -18,7 +16,15 @@ router.post('/login', async (req, res) => {
       state,
       city,
       pincode,
-      attendPhysicalNAPCON
+      attendPhysicalNAPCON,
+      doctor1Name,
+      doctor1Qualification,
+      doctor1PhoneNumber,
+      doctor1Email,
+      doctor2Name,
+      doctor2Qualification,
+      doctor2PhoneNumber,
+      doctor2Email
     } = req.body;
 
     if (!doctorName || !email) {
@@ -36,10 +42,17 @@ router.post('/login', async (req, res) => {
         state,
         city,
         pincode,
-        attendPhysicalNAPCON
+        attendPhysicalNAPCON,
+        doctor1Name,
+        doctor1Qualification,
+        doctor1PhoneNumber,
+        doctor1Email,
+        doctor2Name,
+        doctor2Qualification,
+        doctor2PhoneNumber,
+        doctor2Email
       });
     } else {
-      // update basic profile fields
       user.doctorName = doctorName;
       user.qualification = qualification;
       user.phoneNumber = phoneNumber;
@@ -48,6 +61,14 @@ router.post('/login', async (req, res) => {
       user.city = city;
       user.pincode = pincode;
       user.attendPhysicalNAPCON = attendPhysicalNAPCON;
+      user.doctor1Name = doctor1Name;
+      user.doctor1Qualification = doctor1Qualification;
+      user.doctor1PhoneNumber = doctor1PhoneNumber;
+      user.doctor1Email = doctor1Email;
+      user.doctor2Name = doctor2Name;
+      user.doctor2Qualification = doctor2Qualification;
+      user.doctor2PhoneNumber = doctor2PhoneNumber;
+      user.doctor2Email = doctor2Email;
     }
 
     await user.save();

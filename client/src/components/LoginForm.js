@@ -12,16 +12,25 @@ const INDIAN_STATES = [
 ];
 
 function LoginForm({ onLogin }) {
-  const [form, setForm] = useState({
-    doctorName: '',
-    qualification: '',
-    phoneNumber: '',
-    email: '',
+  const [teamForm, setTeamForm] = useState({
     collegeFullName: '',
     state: '',
     city: '',
-    pincode: '',
-    attendPhysicalNAPCON: 'No'
+    pincode: ''
+  });
+
+  const [doctor1, setDoctor1] = useState({
+    doctorName: '',
+    qualification: '',
+    phoneNumber: '',
+    email: ''
+  });
+
+  const [doctor2, setDoctor2] = useState({
+    doctorName: '',
+    qualification: '',
+    phoneNumber: '',
+    email: ''
   });
 
   const [loading, setLoading] = useState(false);
@@ -31,9 +40,19 @@ function LoginForm({ onLogin }) {
     window.scrollTo(0, 0);
   }, []);
 
-  function update(e) {
+  function updateTeam(e) {
     const { name, value } = e.target;
-    setForm(f => ({ ...f, [name]: value }));
+    setTeamForm(f => ({ ...f, [name]: value }));
+  }
+
+  function updateDoctor1(e) {
+    const { name, value } = e.target;
+    setDoctor1(f => ({ ...f, [name]: value }));
+  }
+
+  function updateDoctor2(e) {
+    const { name, value } = e.target;
+    setDoctor2(f => ({ ...f, [name]: value }));
   }
 
   async function submit(e) {
@@ -41,7 +60,23 @@ function LoginForm({ onLogin }) {
     setError('');
     setLoading(true);
     try {
-      const data = await login(form);
+      const formData = {
+        ...teamForm,
+        doctor1Name: doctor1.doctorName,
+        doctor1Qualification: doctor1.qualification,
+        doctor1PhoneNumber: doctor1.phoneNumber,
+        doctor1Email: doctor1.email,
+        doctor2Name: doctor2.doctorName,
+        doctor2Qualification: doctor2.qualification,
+        doctor2PhoneNumber: doctor2.phoneNumber,
+        doctor2Email: doctor2.email,
+        doctorName: `${doctor1.doctorName} & ${doctor2.doctorName}`,
+        qualification: `${doctor1.qualification} / ${doctor2.qualification}`,
+        phoneNumber: doctor1.phoneNumber,
+        email: doctor1.email
+      };
+
+      const data = await login(formData);
       if (data.token) {
         setToken(data.token);
         onLogin({
@@ -64,109 +99,149 @@ function LoginForm({ onLogin }) {
       <div className="login-card">
         <div className="login-header">
           <img src="/napcon_logo.jpg" alt="NAPCON 2025" className="napcon-logo" />
-          
-          <h2 className="register-title">Kindly register for PG Quiz!</h2>
+          <h2 className="register-title">Team Registration for PG Quiz!</h2>
           <p className="eligibility">
             <strong>Eligibility Criteria:</strong> MD/DNB/Diploma respiratory diseases <strong>(PG students)</strong>
           </p>
-          
-          <div className="note-box">
-            <strong>Note:</strong><br />
-            This quiz is designed for PG students in pulmonary medicine only<br />
-            SR/DM Pulmonary medicine candidates should not participate
-          </div>
+          <p className="team-note">Each team will be composed of two PGs from same institute</p>
         </div>
 
         <form className="login-form" onSubmit={submit}>
-          <div className="form-group">
-            <label>Doctor name <span className="required">*</span></label>
-            <input 
-              name="doctorName" 
-              value={form.doctorName} 
-              onChange={update} 
-              required 
-            />
+          <div className="team-section">
+            <h3 className="section-title">Institute Details</h3>
+            
+            <div className="form-group">
+              <label>College/Institute Full Name <span className="required">*</span></label>
+              <input 
+                name="collegeFullName" 
+                value={teamForm.collegeFullName} 
+                onChange={updateTeam}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label>State</label>
+              <select name="state" value={teamForm.state} onChange={updateTeam}>
+                <option value="">Select state</option>
+                {INDIAN_STATES.map(state => (
+                  <option key={state} value={state}>{state}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label>City</label>
+              <input 
+                name="city" 
+                value={teamForm.city} 
+                onChange={updateTeam}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Pincode</label>
+              <input 
+                name="pincode" 
+                value={teamForm.pincode} 
+                onChange={updateTeam} 
+                maxLength="6"
+              />
+            </div>
           </div>
 
-          <div className="form-group">
-            <label>Qualification <span className="required">*</span></label>
-            <select name="qualification" value={form.qualification} onChange={update} required>
-              <option value="">Select qualification</option>
-              <option value="MD">MD</option>
-              <option value="DM">DM</option>
-              <option value="DNB">DNB</option>
-              <option value="Diploma">Diploma</option>
-            </select>
+          <div className="doctor-section">
+            <h3 className="section-title">Doctor 1 Details</h3>
+            
+            <div className="form-group">
+              <label>Doctor Name <span className="required">*</span></label>
+              <input 
+                name="doctorName" 
+                value={doctor1.doctorName} 
+                onChange={updateDoctor1} 
+                required 
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Qualification <span className="required">*</span></label>
+              <select name="qualification" value={doctor1.qualification} onChange={updateDoctor1} required>
+                <option value="">Select qualification</option>
+                <option value="MD">MD</option>
+                <option value="DNB">DNB</option>
+                <option value="Diploma">Diploma</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label>Phone Number <span className="required">*</span></label>
+              <input 
+                name="phoneNumber" 
+                value={doctor1.phoneNumber} 
+                onChange={updateDoctor1} 
+                placeholder="10 digit number"
+                maxLength="10"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Email <span className="required">*</span></label>
+              <input 
+                name="email" 
+                type="email" 
+                value={doctor1.email} 
+                onChange={updateDoctor1} 
+                required 
+              />
+            </div>
           </div>
 
-          <div className="form-group">
-            <label>Phone Number <span className="required">*</span></label>
-            <input 
-              name="phoneNumber" 
-              value={form.phoneNumber} 
-              onChange={update} 
-              placeholder="10 digit number"
-              maxLength="10"
-              required
-            />
-          </div>
+          <div className="doctor-section">
+            <h3 className="section-title">Doctor 2 Details</h3>
+            
+            <div className="form-group">
+              <label>Doctor Name <span className="required">*</span></label>
+              <input 
+                name="doctorName" 
+                value={doctor2.doctorName} 
+                onChange={updateDoctor2} 
+                required 
+              />
+            </div>
 
-          <div className="form-group">
-            <label>E mail id <span className="required">*</span></label>
-            <input 
-              name="email" 
-              type="email" 
-              value={form.email} 
-              onChange={update} 
-              required 
-            />
-          </div>
+            <div className="form-group">
+              <label>Qualification <span className="required">*</span></label>
+              <select name="qualification" value={doctor2.qualification} onChange={updateDoctor2} required>
+                <option value="">Select qualification</option>
+                <option value="MD">MD</option>
+                <option value="DNB">DNB</option>
+                <option value="Diploma">Diploma</option>
+              </select>
+            </div>
 
-          <div className="form-group">
-            <label>College Full Name <span className="required">*</span></label>
-            <input 
-              name="collegeFullName" 
-              value={form.collegeFullName} 
-              onChange={update}
-              required
-            />
-          </div>
+            <div className="form-group">
+              <label>Phone Number <span className="required">*</span></label>
+              <input 
+                name="phoneNumber" 
+                value={doctor2.phoneNumber} 
+                onChange={updateDoctor2} 
+                placeholder="10 digit number"
+                maxLength="10"
+                required
+              />
+            </div>
 
-          <div className="form-group">
-            <label>State</label>
-            <select name="state" value={form.state} onChange={update}>
-              <option value="">Select state</option>
-              {INDIAN_STATES.map(state => (
-                <option key={state} value={state}>{state}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label>City</label>
-            <input 
-              name="city" 
-              value={form.city} 
-              onChange={update}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Pincode</label>
-            <input 
-              name="pincode" 
-              value={form.pincode} 
-              onChange={update} 
-              maxLength="6"
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Are you planning to attend physical NAPCON?</label>
-            <select name="attendPhysicalNAPCON" value={form.attendPhysicalNAPCON} onChange={update}>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
+            <div className="form-group">
+              <label>Email <span className="required">*</span></label>
+              <input 
+                name="email" 
+                type="email" 
+                value={doctor2.email} 
+                onChange={updateDoctor2} 
+                required 
+              />
+            </div>
           </div>
 
           {error && <div className="error-message">{error}</div>}

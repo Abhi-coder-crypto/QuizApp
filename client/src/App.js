@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import WelcomePage from './components/WelcomePage.js';
 import LoginForm from './components/LoginForm.js';
 import QuizPage from './components/QuizPage.js';
 import ResultPage from './components/ResultPage.js';
@@ -7,13 +8,17 @@ import './styles.css';
 
 export default function App() {
   const [token, setToken] = useState(getToken());
-  const [stage, setStage] = useState('login');
+  const [stage, setStage] = useState('welcome');
   const [result, setResult] = useState(null);
   const [isReturningUser, setIsReturningUser] = useState(false);
 
   useEffect(() => {
     if (getToken()) setStage('quiz');
   }, []);
+
+  function handleNext() {
+    setStage('login');
+  }
 
   function handleLogin(loginData) {
     setToken(loginData.token);
@@ -32,11 +37,14 @@ export default function App() {
     setToken(null);
     setResult(null);
     setIsReturningUser(false);
-    setStage('login');
+    setStage('welcome');
   }
 
   return (
     <>
+      {stage === 'welcome' && (
+        <WelcomePage onNext={handleNext} />
+      )}
       {stage === 'login' && (
         <LoginForm onLogin={handleLogin} />
       )}

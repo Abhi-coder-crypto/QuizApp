@@ -11,7 +11,6 @@ const ScoreSchema = new mongoose.Schema({
     questionIndex: Number, 
     answerIndex: Number 
   }],
-  // legacy field used by older versions of the app
   answers: [{
     questionIndex: Number,
     givenAnswer: Number
@@ -28,6 +27,14 @@ const UserSchema = new mongoose.Schema({
   city: { type: String },
   pincode: { type: String },
   attendPhysicalNAPCON: { type: String },
+  doctor1Name: { type: String },
+  doctor1Qualification: { type: String },
+  doctor1PhoneNumber: { type: String },
+  doctor1Email: { type: String },
+  doctor2Name: { type: String },
+  doctor2Qualification: { type: String },
+  doctor2PhoneNumber: { type: String },
+  doctor2Email: { type: String },
   createdAt: { type: Date, default: Date.now },
   scores: [ScoreSchema]
 });

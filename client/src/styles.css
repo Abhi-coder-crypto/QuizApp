@@ -336,3 +336,121 @@ body {
 .logout-btn {
   width: 100%;
 }
+
+/* Welcome Page Styles */
+.welcome-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #e8f4fc;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.welcome-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  padding: 30px 40px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.welcome-header {
+  margin-bottom: 24px;
+}
+
+.rules-section {
+  margin-bottom: 24px;
+}
+
+.preliminary-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 20px;
+}
+
+.rules-list {
+  font-size: 18px;
+  line-height: 2;
+  color: #333;
+}
+
+.rules-list p {
+  margin: 8px 0;
+}
+
+.team-info {
+  margin: 24px 0;
+}
+
+.team-info-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.next-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 16px 48px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.next-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+/* Team Registration Styles */
+.team-section,
+.doctor-section {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #667eea;
+}
+
+.team-note {
+  color: #667eea;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 520px) {
+  .welcome-card {
+    padding: 24px;
+  }
+  
+  .preliminary-title {
+    font-size: 24px;
+  }
+  
+  .rules-list {
+    font-size: 15px;
+  }
+}
