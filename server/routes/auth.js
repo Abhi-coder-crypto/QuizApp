@@ -44,7 +44,16 @@ router.post('/login', async (req, res) => {
         return res.status(403).json({ 
           message: `Doctor 1 (${doctor1Email}) has already attempted the quiz. Each doctor can only attempt once.`,
           alreadyAttempted: true,
-          doctorName: doctor1Name || 'Doctor 1'
+          hasCompletedQuiz: true,
+          doctorName: doctor1Name || 'Doctor 1',
+          quizResult: {
+            score: existingDoctor1.scores[0].score,
+            total: existingDoctor1.scores[0].total,
+            correctAnswers: existingDoctor1.scores[0].correctAnswers,
+            wrongAnswers: existingDoctor1.scores[0].wrongAnswers,
+            timeTaken: existingDoctor1.scores[0].timeTaken,
+            date: existingDoctor1.scores[0].date
+          }
         });
       }
     }
@@ -62,7 +71,16 @@ router.post('/login', async (req, res) => {
         return res.status(403).json({ 
           message: `Doctor 2 (${doctor2Email}) has already attempted the quiz. Each doctor can only attempt once.`,
           alreadyAttempted: true,
-          doctorName: doctor2Name || 'Doctor 2'
+          hasCompletedQuiz: true,
+          doctorName: doctor2Name || 'Doctor 2',
+          quizResult: {
+            score: existingDoctor2.scores[0].score,
+            total: existingDoctor2.scores[0].total,
+            correctAnswers: existingDoctor2.scores[0].correctAnswers,
+            wrongAnswers: existingDoctor2.scores[0].wrongAnswers,
+            timeTaken: existingDoctor2.scores[0].timeTaken,
+            date: existingDoctor2.scores[0].date
+          }
         });
       }
     }

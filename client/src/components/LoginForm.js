@@ -79,16 +79,17 @@ function LoginForm({ onLogin }) {
 
       const data = await login(formData);
       
-      if (data.alreadyAttempted && !data.hasCompletedQuiz) {
-        setError(data.message || 'One of the doctors has already attempted the quiz.');
-        return;
-      }
-
       if (data.hasCompletedQuiz && data.quizResult) {
+        setError(data.message || 'This doctor/team has already completed the quiz.');
         setExistingUserResult({
           token: data.token,
           quizResult: data.quizResult
         });
+        return;
+      }
+
+      if (data.alreadyAttempted) {
+        setError(data.message || 'One of the doctors has already attempted the quiz.');
         return;
       }
 
