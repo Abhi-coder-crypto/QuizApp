@@ -801,6 +801,211 @@ body {
   }
 }
 
+/* Enhanced Mobile Responsiveness */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  .login-overlay,
+  .welcome-overlay,
+  .quiz-overlay {
+    padding: 10px;
+  }
+
+  .login-card,
+  .welcome-card,
+  .quiz-container {
+    padding: 20px;
+    border-radius: 16px;
+    max-width: 100%;
+  }
+
+  .napcon-logo,
+  .quiz-logo,
+  .result-logo {
+    max-width: 200px;
+  }
+
+  .form-group input,
+  .form-group select {
+    padding: 10px 14px;
+    font-size: 16px;
+  }
+
+  .submit-btn,
+  .next-btn,
+  .quiz-next-btn {
+    padding: 12px 20px;
+    font-size: 15px;
+    width: 100%;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .stat-item {
+    padding: 12px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+
+  .score-display {
+    padding: 20px;
+  }
+
+  .score-value {
+    font-size: 42px;
+  }
+
+  .score-divider,
+  .score-total {
+    font-size: 24px;
+  }
+
+  .time-display {
+    flex-wrap: wrap;
+    padding: 12px;
+  }
+
+  .result-header h1 {
+    font-size: 20px;
+  }
+
+  .result-icon {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 400px) {
+  body {
+    padding: 5px;
+  }
+
+  .login-overlay,
+  .welcome-overlay,
+  .quiz-overlay {
+    padding: 5px;
+  }
+
+  .login-card,
+  .welcome-card,
+  .quiz-container {
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .napcon-logo,
+  .quiz-logo,
+  .result-logo {
+    max-width: 150px;
+  }
+
+  .section-title,
+  .rules-title {
+    font-size: 14px;
+  }
+
+  .form-group label {
+    font-size: 12px;
+  }
+
+  .form-group input,
+  .form-group select {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .team-section,
+  .doctor-section {
+    padding: 15px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .score-value {
+    font-size: 36px;
+  }
+
+  .score-divider,
+  .score-total {
+    font-size: 20px;
+  }
+
+  .question-timer {
+    font-size: 16px;
+    padding: 6px 12px;
+  }
+
+  .question-progress {
+    font-size: 14px;
+  }
+
+  .option-btn {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .option-letter {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+
+  .preliminary-title {
+    font-size: 20px;
+  }
+
+  .register-title {
+    font-size: 18px;
+  }
+
+  .eligibility {
+    font-size: 13px;
+  }
+
+  .rules-list {
+    font-size: 14px;
+    margin-left: 10px;
+  }
+}
+
+/* Tablet landscape */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .login-card,
+  .welcome-card {
+    max-width: 500px;
+  }
+
+  .quiz-container {
+    max-width: 700px;
+  }
+}
+
+/* Ensure touch-friendly targets */
+@media (hover: none) and (pointer: coarse) {
+  .option-btn {
+    min-height: 48px;
+  }
+
+  .submit-btn,
+  .next-btn,
+  .quiz-next-btn {
+    min-height: 48px;
+  }
+
+  .form-group input,
+  .form-group select {
+    min-height: 44px;
+  }
+}
+
 .existing-user-section {
   display: flex;
   flex-direction: column;
