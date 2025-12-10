@@ -30,18 +30,20 @@ app.get('*', (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI;
+const HOST = '0.0.0.0';
+const MONGO_URI = process.env.MONGO_URI || process.env.MONGODB_URI;
 
-// Connect MongoDB
-mongoose.connect(MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => {
-  console.log('🔥 MongoDB Connected Successfully!');
-  app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
-})
-.catch(err => console.error('❌ MongoDB Connection Failed:', err));
+if (!MONGO_URI) {
+  console.log('⚠️ MONGO_URI not set. Running without database connection.');
+  app.listen(PORT, HOST, () => console.log(`🚀 Server running on http://${HOST}:${PORT}`));
+} else {
+  mongoose.connect(MONGO_URI)
+  .then(() => {
+    console.log('🔥 MongoDB Connected Successfully!');
+    app.listen(PORT, HOST, () => console.log(`🚀 Server running on http://${HOST}:${PORT}`));
+  })
+  .catch(err => console.error('❌ MongoDB Connection Failed:', err));
+}
 
 // Handle uncaught exceptions
 process.on('uncaughtException', err => {
