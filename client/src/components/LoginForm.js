@@ -4,7 +4,7 @@ import { login, setToken } from '../api.js';
 function LoginForm({ onLogin }) {
   const [form, setForm] = useState({
     doctorName: '',
-    qualification: 'MD',
+    qualification: '',
     phoneNumber: '',
     email: '',
     collegeFullName: '',
@@ -49,107 +49,109 @@ function LoginForm({ onLogin }) {
     <div className="login-overlay">
       <div className="login-card">
         <div className="login-header">
-          <h1>NAPCON Quiz</h1>
-          <p>Please fill in your details to start the quiz</p>
+          <img src="/napcon_logo.jpg" alt="NAPCON 2025" className="napcon-logo" />
+          
+          <h2 className="register-title">Kindly register for PG Quiz!</h2>
+          <p className="eligibility">
+            <strong>Eligibility Criteria:</strong> MD/DNB/Diploma respiratory diseases <strong>(PG students)</strong>
+          </p>
+          
+          <div className="note-box">
+            <strong>Note:</strong><br />
+            This quiz is designed for PG students in pulmonary medicine only<br />
+            SR/DM Pulmonary medicine candidates should not participate
+          </div>
         </div>
 
         <form className="login-form" onSubmit={submit}>
           <div className="form-group">
-            <label>Doctor Name <span className="required">*</span></label>
+            <label>Doctor name <span className="required">*</span></label>
             <input 
               name="doctorName" 
               value={form.doctorName} 
               onChange={update} 
-              placeholder="Enter your full name"
               required 
             />
           </div>
 
-          <div className="form-row-inline">
-            <div className="form-group">
-              <label>Qualification</label>
-              <select name="qualification" value={form.qualification} onChange={update}>
-                <option value="MD">MD</option>
-                <option value="DM">DM</option>
-                <option value="DNB">DNB</option>
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label>Phone Number</label>
-              <input 
-                name="phoneNumber" 
-                value={form.phoneNumber} 
-                onChange={update} 
-                placeholder="10-digit number"
-                maxLength="10"
-              />
-            </div>
+          <div className="form-group">
+            <label>Qualification <span className="required">*</span></label>
+            <select name="qualification" value={form.qualification} onChange={update} required>
+              <option value="">Select qualification</option>
+              <option value="MD">MD</option>
+              <option value="DM">DM</option>
+              <option value="DNB">DNB</option>
+              <option value="Diploma">Diploma</option>
+            </select>
           </div>
 
           <div className="form-group">
-            <label>Email ID <span className="required">*</span></label>
+            <label>Phone Number <span className="required">*</span></label>
+            <input 
+              name="phoneNumber" 
+              value={form.phoneNumber} 
+              onChange={update} 
+              placeholder="10 digit number"
+              maxLength="10"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>E mail id <span className="required">*</span></label>
             <input 
               name="email" 
               type="email" 
               value={form.email} 
               onChange={update} 
-              placeholder="your@email.com"
               required 
             />
           </div>
 
           <div className="form-group">
-            <label>College Full Name</label>
+            <label>College Full Name <span className="required">*</span></label>
             <input 
               name="collegeFullName" 
               value={form.collegeFullName} 
               onChange={update}
-              placeholder="Enter your college name" 
+              required
             />
           </div>
 
-          <div className="form-row-inline">
-            <div className="form-group">
-              <label>State</label>
-              <input 
-                name="state" 
-                value={form.state} 
-                onChange={update}
-                placeholder="State" 
-              />
-            </div>
-
-            <div className="form-group">
-              <label>City</label>
-              <input 
-                name="city" 
-                value={form.city} 
-                onChange={update}
-                placeholder="City" 
-              />
-            </div>
+          <div className="form-group">
+            <label>State</label>
+            <input 
+              name="state" 
+              value={form.state} 
+              onChange={update}
+            />
           </div>
 
-          <div className="form-row-inline">
-            <div className="form-group">
-              <label>Pincode</label>
-              <input 
-                name="pincode" 
-                value={form.pincode} 
-                onChange={update} 
-                placeholder="6-digit"
-                maxLength="6"
-              />
-            </div>
+          <div className="form-group">
+            <label>City</label>
+            <input 
+              name="city" 
+              value={form.city} 
+              onChange={update}
+            />
+          </div>
 
-            <div className="form-group">
-              <label>Attending NAPCON?</label>
-              <select name="attendPhysicalNAPCON" value={form.attendPhysicalNAPCON} onChange={update}>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-              </select>
-            </div>
+          <div className="form-group">
+            <label>Pincode</label>
+            <input 
+              name="pincode" 
+              value={form.pincode} 
+              onChange={update} 
+              maxLength="6"
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Are you planning to attend physical NAPCON?</label>
+            <select name="attendPhysicalNAPCON" value={form.attendPhysicalNAPCON} onChange={update}>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
           </div>
 
           {error && <div className="error-message">{error}</div>}
