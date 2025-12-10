@@ -72,17 +72,18 @@ router.get('/questions', authMiddleware, async (req, res) => {
 // Submit answers only once per user
 router.post('/submit', authMiddleware, async (req, res) => {
   try {
-    const { answers } = req.body;
+    const { answers, timeTaken } = req.body;
     if (!Array.isArray(answers)) return res.status(400).json({ message: 'Invalid answers' });
 
     const user = await User.findById(req.user.id);
     
-    // 🔥 Restrict to one attempt - check if user has already submitted
+    // Restrict to one attempt - check if user has already submitted
     if (user.scores && user.scores.length > 0) {
       return res.status(403).json({
         message: "You have already completed the quiz. Only one attempt allowed.",
         score: user.scores[0].score,
-        total: user.scores[0].total
+        total: user.scores[0].total,
+        timeTaken: user.scores[0].timeTaken
       });
     }
 
@@ -90,43 +91,50 @@ router.post('/submit', authMiddleware, async (req, res) => {
     let correctAnswers = 0;
     let wrongAnswers = 0;
 
-    // Calculate score: +2 for correct, -1 for incorrect, only for answered questions
+    // Create a set of answered question indices
+    const answeredSet = new Set(answers.map(a => a.questionIndex));
+
+    // Calculate score: +2 for correct, -1 for incorrect, 0 for unattempted
     answers.forEach(a => {
       const q = questions[a.questionIndex];
       if (q && a.answerIndex === q.correctIndex) {
         score += 2;
         correctAnswers++;
-      } else {
+      } else if (a.answerIndex !== -1 && a.answerIndex !== null && a.answerIndex !== undefined) {
         score -= 1;
         wrongAnswers++;
       }
     });
 
+    const unattempted = questions.length - answeredSet.size;
     const maxScore = questions.length * 2; // 30 * 2 = 60
 
-    // Save FIRST and ONLY attempt. Store both `rawAnswers` (new) and `answers` (legacy)
+    // Save FIRST and ONLY attempt
     user.scores = [{
-      score: Math.max(0, score), // Ensure score doesn't go negative
+      score: Math.max(0, score),
       total: maxScore,
       correctAnswers,
       wrongAnswers,
+      unattempted,
       answeredQuestions: answers.length,
+      timeTaken: timeTaken || 0,
       date: new Date(),
       rawAnswers: answers,
-      // keep legacy field for compatibility with older documents
       answers: answers
     }];
 
     await user.save();
 
-    console.log(`✅ Quiz submitted for ${user.email} - Score: ${Math.max(0, score)}/${maxScore} (${correctAnswers} correct, ${wrongAnswers} wrong)`);
+    console.log(`✅ Quiz submitted for ${user.email} - Score: ${Math.max(0, score)}/${maxScore} (${correctAnswers} correct, ${wrongAnswers} wrong, ${unattempted} unattempted) Time: ${timeTaken}s`);
 
     res.json({ 
       score: Math.max(0, score), 
       total: maxScore,
       correctAnswers,
       wrongAnswers,
-      answeredQuestions: answers.length
+      unattempted,
+      answeredQuestions: answers.length,
+      timeTaken: timeTaken || 0
     });
 
   } catch (e) {

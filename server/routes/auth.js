@@ -31,6 +31,42 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'doctorName and email are required' });
     }
 
+    // Check if Doctor 1 has already attempted (by email)
+    if (doctor1Email) {
+      const existingDoctor1 = await User.findOne({ 
+        $or: [
+          { doctor1Email: doctor1Email },
+          { doctor2Email: doctor1Email }
+        ],
+        'scores.0': { $exists: true }
+      });
+      if (existingDoctor1) {
+        return res.status(403).json({ 
+          message: `Doctor 1 (${doctor1Email}) has already attempted the quiz. Each doctor can only attempt once.`,
+          alreadyAttempted: true,
+          doctorName: doctor1Name || 'Doctor 1'
+        });
+      }
+    }
+
+    // Check if Doctor 2 has already attempted (by email)
+    if (doctor2Email) {
+      const existingDoctor2 = await User.findOne({ 
+        $or: [
+          { doctor1Email: doctor2Email },
+          { doctor2Email: doctor2Email }
+        ],
+        'scores.0': { $exists: true }
+      });
+      if (existingDoctor2) {
+        return res.status(403).json({ 
+          message: `Doctor 2 (${doctor2Email}) has already attempted the quiz. Each doctor can only attempt once.`,
+          alreadyAttempted: true,
+          doctorName: doctor2Name || 'Doctor 2'
+        });
+      }
+    }
+
     let user = await User.findOne({ email });
     if (!user) {
       user = new User({
@@ -53,6 +89,23 @@ router.post('/login', async (req, res) => {
         doctor2Email
       });
     } else {
+      // Check if this user (team) has already completed the quiz
+      if (user.scores && user.scores.length > 0) {
+        return res.status(403).json({ 
+          message: 'This team has already completed the quiz. Only one attempt is allowed.',
+          alreadyAttempted: true,
+          hasCompletedQuiz: true,
+          quizResult: {
+            score: user.scores[0].score,
+            total: user.scores[0].total,
+            correctAnswers: user.scores[0].correctAnswers,
+            wrongAnswers: user.scores[0].wrongAnswers,
+            timeTaken: user.scores[0].timeTaken,
+            date: user.scores[0].date
+          }
+        });
+      }
+
       user.doctorName = doctorName;
       user.qualification = qualification;
       user.phoneNumber = phoneNumber;
@@ -81,6 +134,7 @@ router.post('/login', async (req, res) => {
       total: user.scores[0].total,
       correctAnswers: user.scores[0].correctAnswers,
       wrongAnswers: user.scores[0].wrongAnswers,
+      timeTaken: user.scores[0].timeTaken,
       date: user.scores[0].date
     } : null;
 

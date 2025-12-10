@@ -1,24 +1,24 @@
 import React from 'react';
 
 function QuestionCard({ question, onAnswer, selectedAnswer, questionIndex }) {
+  const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+
   return (
     <div className="question-card">
-      <div style={{fontWeight:700, marginBottom:8}}>{question.text}</div>
-      <ul className="options">
+      <div className="question-text">{question.text}</div>
+      <div className="options-list">
         {question.options.map((opt, idx) => (
-          <li key={idx}>
-            <label style={{display:'flex', alignItems:'center', gap:10}}>
-              <input
-                type="radio"
-                name={`q-${questionIndex}`}
-                checked={selectedAnswer === idx}
-                onChange={() => onAnswer(idx)}
-              />
-              <span>{opt}</span>
-            </label>
-          </li>
+          <button
+            key={idx}
+            type="button"
+            className={`option-btn ${selectedAnswer === idx ? 'selected' : ''}`}
+            onClick={() => onAnswer(idx)}
+          >
+            <span className="option-letter">{letters[idx]}</span>
+            <span>{opt}</span>
+          </button>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

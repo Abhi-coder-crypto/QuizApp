@@ -5,7 +5,9 @@ const ScoreSchema = new mongoose.Schema({
   total: { type: Number, required: true },
   correctAnswers: { type: Number, default: 0 },
   wrongAnswers: { type: Number, default: 0 },
+  unattempted: { type: Number, default: 0 },
   answeredQuestions: { type: Number, default: 0 },
+  timeTaken: { type: Number, default: 0 },
   date: { type: Date, default: Date.now },
   rawAnswers: [{ 
     questionIndex: Number, 

@@ -77,6 +77,23 @@ function LoginForm({ onLogin }) {
       };
 
       const data = await login(formData);
+      
+      // Check if either doctor has already attempted
+      if (data.alreadyAttempted && !data.hasCompletedQuiz) {
+        setError(data.message || 'One of the doctors has already attempted the quiz.');
+        return;
+      }
+
+      // Check if team has already completed quiz - show their result
+      if (data.hasCompletedQuiz && data.quizResult) {
+        onLogin({
+          token: data.token || null,
+          hasCompletedQuiz: true,
+          quizResult: data.quizResult
+        });
+        return;
+      }
+
       if (data.token) {
         setToken(data.token);
         onLogin({
@@ -84,8 +101,10 @@ function LoginForm({ onLogin }) {
           hasCompletedQuiz: data.hasCompletedQuiz,
           quizResult: data.quizResult
         });
+      } else if (data.message) {
+        setError(data.message);
       } else {
-        setError(data.message || 'Login failed');
+        setError('Login failed');
       }
     } catch (err) {
       setError('Network error');

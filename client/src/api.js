@@ -20,11 +20,11 @@ export const fetchQuestions = async () => {
   return res.json();
 };
 
-export const submitAnswers = async (answers) => {
+export const submitAnswers = async (answers, timeTaken) => {
   const res = await fetch(`${BASE_URL}/api/quiz/submit`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
-    body: JSON.stringify({ answers })
+    body: JSON.stringify({ answers, timeTaken })
   });
   return res.json();
 };

@@ -10,21 +10,29 @@ function ResultPage({ result, isReturningUser, onLogout }) {
     day: 'numeric'
   }) : null;
 
+  function formatTime(seconds) {
+    if (!seconds && seconds !== 0) return 'N/A';
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins} min ${secs} sec`;
+  }
+
   return (
     <div className="login-overlay">
       <div className="login-card result-card">
         <div className="result-header">
+          <img src="/napcon_logo.jpg" alt="NAPCON 2025" className="napcon-logo result-logo" />
           {isReturningUser ? (
             <>
               <div className="result-icon returning">&#128274;</div>
               <h1>Quiz Already Completed</h1>
-              <p className="result-subtitle">You have already taken this quiz. Only one attempt is allowed per user.</p>
+              <p className="result-subtitle">Your team has already taken this quiz. Only one attempt is allowed per team.</p>
             </>
           ) : (
             <>
               <div className="result-icon success">&#127942;</div>
               <h1>Quiz Completed!</h1>
-              <p className="result-subtitle">Congratulations on completing the NAPCON Quiz</p>
+              <p className="result-subtitle">Congratulations on completing the NAPCON PG Quiz</p>
             </>
           )}
         </div>
@@ -49,11 +57,23 @@ function ResultPage({ result, isReturningUser, onLogout }) {
           </div>
         </div>
 
+        {result.unattempted > 0 && (
+          <div className="unattempted-info">
+            <span>Unattempted: {result.unattempted} (0 marks each)</span>
+          </div>
+        )}
+
+        <div className="time-display">
+          <span className="time-icon">&#9201;</span>
+          <span className="time-label">Time Taken:</span>
+          <span className="time-value">{formatTime(result.timeTaken)}</span>
+        </div>
+
         {completionDate && (
           <p className="completion-date">Completed on {completionDate}</p>
         )}
 
-        <p className="saved-note">Your result has been saved to your profile.</p>
+        <p className="saved-note">Your result has been saved. Time is recorded for tie-breaker purposes.</p>
 
         <button className="submit-btn logout-btn" onClick={onLogout}>
           Logout
