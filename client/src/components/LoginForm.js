@@ -42,62 +42,127 @@ function LoginForm({ onLogin }) {
   }
 
   return (
-    <form onSubmit={submit}>
-      <div className="form-row">
-        <label>Doctor name *</label>
-        <input name="doctorName" value={form.doctorName} onChange={update} required />
-      </div>
+    <div className="login-overlay">
+      <div className="login-card">
+        <div className="login-header">
+          <h1>NAPCON Quiz</h1>
+          <p>Please fill in your details to start the quiz</p>
+        </div>
 
-      <div className="form-row">
-        <label>Qualification</label>
-        <select name="qualification" value={form.qualification} onChange={update}>
-          <option>MD</option>
-          <option>DM</option>
-          <option>DNB</option>
-        </select>
-      </div>
+        <form className="login-form" onSubmit={submit}>
+          <div className="form-group">
+            <label>Doctor Name <span className="required">*</span></label>
+            <input 
+              name="doctorName" 
+              value={form.doctorName} 
+              onChange={update} 
+              placeholder="Enter your full name"
+              required 
+            />
+          </div>
 
-      <div className="form-row">
-        <label>Phone Number</label>
-        <input name="phoneNumber" value={form.phoneNumber} onChange={update} maxLength="10"/>
-      </div>
+          <div className="form-row-inline">
+            <div className="form-group">
+              <label>Qualification</label>
+              <select name="qualification" value={form.qualification} onChange={update}>
+                <option value="MD">MD</option>
+                <option value="DM">DM</option>
+                <option value="DNB">DNB</option>
+              </select>
+            </div>
 
-      <div className="form-row">
-        <label>E mail id *</label>
-        <input name="email" type="email" value={form.email} onChange={update} required />
-      </div>
+            <div className="form-group">
+              <label>Phone Number</label>
+              <input 
+                name="phoneNumber" 
+                value={form.phoneNumber} 
+                onChange={update} 
+                placeholder="10-digit number"
+                maxLength="10"
+              />
+            </div>
+          </div>
 
-      <div className="form-row">
-        <label>College Full Name</label>
-        <input name="collegeFullName" value={form.collegeFullName} onChange={update} />
-      </div>
+          <div className="form-group">
+            <label>Email ID <span className="required">*</span></label>
+            <input 
+              name="email" 
+              type="email" 
+              value={form.email} 
+              onChange={update} 
+              placeholder="your@email.com"
+              required 
+            />
+          </div>
 
-      <div className="form-row">
-        <label>State</label>
-        <input name="state" value={form.state} onChange={update} />
-      </div>
+          <div className="form-group">
+            <label>College Full Name</label>
+            <input 
+              name="collegeFullName" 
+              value={form.collegeFullName} 
+              onChange={update}
+              placeholder="Enter your college name" 
+            />
+          </div>
 
-      <div className="form-row">
-        <label>City</label>
-        <input name="city" value={form.city} onChange={update} />
-      </div>
+          <div className="form-row-inline">
+            <div className="form-group">
+              <label>State</label>
+              <input 
+                name="state" 
+                value={form.state} 
+                onChange={update}
+                placeholder="State" 
+              />
+            </div>
 
-      <div className="form-row">
-        <label>Pincode</label>
-        <input name="pincode" value={form.pincode} onChange={update} maxLength="6"/>
-      </div>
+            <div className="form-group">
+              <label>City</label>
+              <input 
+                name="city" 
+                value={form.city} 
+                onChange={update}
+                placeholder="City" 
+              />
+            </div>
+          </div>
 
-      <div className="form-row">
-        <label>Are you planning to attend physical NAPCON?</label>
-        <select name="attendPhysicalNAPCON" value={form.attendPhysicalNAPCON} onChange={update}>
-          <option>Yes</option>
-          <option>No</option>
-        </select>
-      </div>
+          <div className="form-row-inline">
+            <div className="form-group">
+              <label>Pincode</label>
+              <input 
+                name="pincode" 
+                value={form.pincode} 
+                onChange={update} 
+                placeholder="6-digit"
+                maxLength="6"
+              />
+            </div>
 
-      {error && <div style={{color:'red'}}>{error}</div>}
-      <button type="submit" disabled={loading}>{loading ? 'Please wait...' : 'Submit & Start Quiz'}</button>
-    </form>
+            <div className="form-group">
+              <label>Attending NAPCON?</label>
+              <select name="attendPhysicalNAPCON" value={form.attendPhysicalNAPCON} onChange={update}>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+          </div>
+
+          {error && <div className="error-message">{error}</div>}
+
+          <button type="submit" className="submit-btn" disabled={loading}>
+            {loading ? (
+              <>
+                <span className="spinner"></span>
+                Please wait...
+              </>
+            ) : (
+              'Submit & Start Quiz'
+            )}
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }
 
