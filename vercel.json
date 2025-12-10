@@ -19,16 +19,20 @@
       "dest": "server/server.js"
     },
     {
-      "src": "/(static/.*)",
-      "dest": "client/$1"
+      "src": "/static/(.*)",
+      "dest": "client/build/static/$1"
     },
     {
-      "src": "/(.*\\.(js|css|ico|png|jpg|jpeg|svg|json|txt))",
-      "dest": "client/$1"
+      "src": "/(.*\\.(js|css|ico|png|jpg|jpeg|svg|json|txt|map))",
+      "dest": "client/build/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "client/index.html"
+      "dest": "client/build/index.html"
     }
-  ]
+  ],
+  "env": {
+    "MONGO_URI": "@mongo_uri",
+    "JWT_SECRET": "@jwt_secret"
+  }
 }
