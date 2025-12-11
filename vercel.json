@@ -30,12 +30,5 @@
       "src": "/(.*)",
       "dest": "client/build/index.html"
     }
-  ],
-  "env": {
-    "MONGO_URI": "@mongo_uri",
-    "JWT_SECRET": "@jwt_secret",
-    "ADMIN_JWT_SECRET": "@admin_jwt_secret",
-    "ADMIN_USERNAME": "@admin_username",
-    "ADMIN_PASSWORD": "@admin_password"
-  }
+  ]
 }
