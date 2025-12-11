@@ -293,16 +293,15 @@ function AdminPanel() {
                       </div>
                       <div className="institute-section">
                         <div className="institute-label">Institute</div>
-                        {user.sameCollege ? (
-                          <div className="same-college-badge-admin">Same as Doctor 1</div>
-                        ) : (
-                          <>
-                            <div className="institute-name">{user.doctor2CollegeFullName || '-'}</div>
-                            <div className="institute-location">
-                              {user.doctor2City || '-'}, {user.doctor2State || '-'}
-                            </div>
-                          </>
-                        )}
+                        <div className="institute-name">
+                          {user.sameCollege ? (user.doctor1CollegeFullName || '-') : (user.doctor2CollegeFullName || '-')}
+                        </div>
+                        <div className="institute-location">
+                          {user.sameCollege 
+                            ? `${user.doctor1City || '-'}, ${user.doctor1State || '-'}`
+                            : `${user.doctor2City || '-'}, ${user.doctor2State || '-'}`
+                          }
+                        </div>
                       </div>
                     </div>
                   </div>
