@@ -12,25 +12,28 @@ const INDIAN_STATES = [
 ];
 
 function LoginForm({ onLogin }) {
-  const [teamForm, setTeamForm] = useState({
+  const [sameCollege, setSameCollege] = useState(false);
+
+  const [doctor1, setDoctor1] = useState({
+    doctorName: '',
+    qualification: '',
+    phoneNumber: '',
+    email: '',
     collegeFullName: '',
     state: '',
     city: '',
     pincode: ''
   });
 
-  const [doctor1, setDoctor1] = useState({
-    doctorName: '',
-    qualification: '',
-    phoneNumber: '',
-    email: ''
-  });
-
   const [doctor2, setDoctor2] = useState({
     doctorName: '',
     qualification: '',
     phoneNumber: '',
-    email: ''
+    email: '',
+    collegeFullName: '',
+    state: '',
+    city: '',
+    pincode: ''
   });
 
   const [loading, setLoading] = useState(false);
@@ -40,11 +43,6 @@ function LoginForm({ onLogin }) {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  function updateTeam(e) {
-    const { name, value } = e.target;
-    setTeamForm(f => ({ ...f, [name]: value }));
-  }
 
   function updateDoctor1(e) {
     const { name, value } = e.target;
@@ -62,15 +60,27 @@ function LoginForm({ onLogin }) {
     setLoading(true);
     try {
       const formData = {
-        ...teamForm,
+        collegeFullName: doctor1.collegeFullName,
+        state: doctor1.state,
+        city: doctor1.city,
+        pincode: doctor1.pincode,
         doctor1Name: doctor1.doctorName,
         doctor1Qualification: doctor1.qualification,
         doctor1PhoneNumber: doctor1.phoneNumber,
         doctor1Email: doctor1.email,
+        doctor1CollegeFullName: doctor1.collegeFullName,
+        doctor1State: doctor1.state,
+        doctor1City: doctor1.city,
+        doctor1Pincode: doctor1.pincode,
         doctor2Name: doctor2.doctorName,
         doctor2Qualification: doctor2.qualification,
         doctor2PhoneNumber: doctor2.phoneNumber,
         doctor2Email: doctor2.email,
+        doctor2CollegeFullName: sameCollege ? 'NA' : doctor2.collegeFullName,
+        doctor2State: sameCollege ? 'NA' : doctor2.state,
+        doctor2City: sameCollege ? 'NA' : doctor2.city,
+        doctor2Pincode: sameCollege ? 'NA' : doctor2.pincode,
+        sameCollege: sameCollege,
         doctorName: `${doctor1.doctorName} & ${doctor2.doctorName}`,
         qualification: `${doctor1.qualification} / ${doctor2.qualification}`,
         phoneNumber: doctor1.phoneNumber,
@@ -116,51 +126,6 @@ function LoginForm({ onLogin }) {
     <div className="login-overlay">
       <div className="login-card">
         <form className="login-form" onSubmit={submit}>
-          <div className="team-section">
-            <h3 className="section-title">Institute Details</h3>
-            
-            <div className="form-group">
-              <label>College/Institute Full Name <span className="required">*</span></label>
-              <input 
-                name="collegeFullName" 
-                value={teamForm.collegeFullName} 
-                onChange={updateTeam}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label>State <span className="required">*</span></label>
-              <select name="state" value={teamForm.state} onChange={updateTeam} required>
-                <option value="">Select state</option>
-                {INDIAN_STATES.map(state => (
-                  <option key={state} value={state}>{state}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label>City <span className="required">*</span></label>
-              <input 
-                name="city" 
-                value={teamForm.city} 
-                onChange={updateTeam}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Pincode <span className="required">*</span></label>
-              <input 
-                name="pincode" 
-                value={teamForm.pincode} 
-                onChange={updateTeam} 
-                maxLength="6"
-                required
-              />
-            </div>
-          </div>
-
           <div className="doctor-section">
             <h3 className="section-title">Doctor 1 Details</h3>
             
@@ -204,6 +169,49 @@ function LoginForm({ onLogin }) {
                 value={doctor1.email} 
                 onChange={updateDoctor1} 
                 required 
+              />
+            </div>
+
+            <h4 className="subsection-title">Institute Details (Doctor 1)</h4>
+
+            <div className="form-group">
+              <label>College/Institute Full Name <span className="required">*</span></label>
+              <input 
+                name="collegeFullName" 
+                value={doctor1.collegeFullName} 
+                onChange={updateDoctor1}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label>State <span className="required">*</span></label>
+              <select name="state" value={doctor1.state} onChange={updateDoctor1} required>
+                <option value="">Select state</option>
+                {INDIAN_STATES.map(state => (
+                  <option key={state} value={state}>{state}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label>City <span className="required">*</span></label>
+              <input 
+                name="city" 
+                value={doctor1.city} 
+                onChange={updateDoctor1}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Pincode <span className="required">*</span></label>
+              <input 
+                name="pincode" 
+                value={doctor1.pincode} 
+                onChange={updateDoctor1} 
+                maxLength="6"
+                required
               />
             </div>
           </div>
@@ -253,6 +261,68 @@ function LoginForm({ onLogin }) {
                 required 
               />
             </div>
+
+            <h4 className="subsection-title">Institute Details (Doctor 2)</h4>
+
+            <div className="form-group checkbox-group">
+              <label className="checkbox-label">
+                <input 
+                  type="checkbox" 
+                  checked={sameCollege} 
+                  onChange={(e) => setSameCollege(e.target.checked)}
+                />
+                <span>Same college as Doctor 1</span>
+              </label>
+            </div>
+
+            {sameCollege ? (
+              <div className="same-college-note">
+                Institute details will be marked as "NA" (Same as Doctor 1)
+              </div>
+            ) : (
+              <>
+                <div className="form-group">
+                  <label>College/Institute Full Name <span className="required">*</span></label>
+                  <input 
+                    name="collegeFullName" 
+                    value={doctor2.collegeFullName} 
+                    onChange={updateDoctor2}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>State <span className="required">*</span></label>
+                  <select name="state" value={doctor2.state} onChange={updateDoctor2} required>
+                    <option value="">Select state</option>
+                    {INDIAN_STATES.map(state => (
+                      <option key={state} value={state}>{state}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label>City <span className="required">*</span></label>
+                  <input 
+                    name="city" 
+                    value={doctor2.city} 
+                    onChange={updateDoctor2}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Pincode <span className="required">*</span></label>
+                  <input 
+                    name="pincode" 
+                    value={doctor2.pincode} 
+                    onChange={updateDoctor2} 
+                    maxLength="6"
+                    required
+                  />
+                </div>
+              </>
+            )}
           </div>
 
           {error && <div className="error-message">{error}</div>}

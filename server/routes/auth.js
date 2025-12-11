@@ -21,17 +21,25 @@ router.post('/login', async (req, res) => {
       doctor1Qualification,
       doctor1PhoneNumber,
       doctor1Email,
+      doctor1CollegeFullName,
+      doctor1State,
+      doctor1City,
+      doctor1Pincode,
       doctor2Name,
       doctor2Qualification,
       doctor2PhoneNumber,
-      doctor2Email
+      doctor2Email,
+      doctor2CollegeFullName,
+      doctor2State,
+      doctor2City,
+      doctor2Pincode,
+      sameCollege
     } = req.body;
 
     if (!doctorName || !email) {
       return res.status(400).json({ message: 'doctorName and email are required' });
     }
 
-    // Check if Doctor 1 has already attempted (by email)
     if (doctor1Email) {
       const existingDoctor1 = await User.findOne({ 
         $or: [
@@ -58,7 +66,6 @@ router.post('/login', async (req, res) => {
       }
     }
 
-    // Check if Doctor 2 has already attempted (by email)
     if (doctor2Email) {
       const existingDoctor2 = await User.findOne({ 
         $or: [
@@ -101,13 +108,21 @@ router.post('/login', async (req, res) => {
         doctor1Qualification,
         doctor1PhoneNumber,
         doctor1Email,
+        doctor1CollegeFullName,
+        doctor1State,
+        doctor1City,
+        doctor1Pincode,
         doctor2Name,
         doctor2Qualification,
         doctor2PhoneNumber,
-        doctor2Email
+        doctor2Email,
+        doctor2CollegeFullName,
+        doctor2State,
+        doctor2City,
+        doctor2Pincode,
+        sameCollege
       });
     } else {
-      // Check if this user (team) has already completed the quiz
       if (user.scores && user.scores.length > 0) {
         return res.status(403).json({ 
           message: 'This team has already completed the quiz. Only one attempt is allowed.',
@@ -136,10 +151,19 @@ router.post('/login', async (req, res) => {
       user.doctor1Qualification = doctor1Qualification;
       user.doctor1PhoneNumber = doctor1PhoneNumber;
       user.doctor1Email = doctor1Email;
+      user.doctor1CollegeFullName = doctor1CollegeFullName;
+      user.doctor1State = doctor1State;
+      user.doctor1City = doctor1City;
+      user.doctor1Pincode = doctor1Pincode;
       user.doctor2Name = doctor2Name;
       user.doctor2Qualification = doctor2Qualification;
       user.doctor2PhoneNumber = doctor2PhoneNumber;
       user.doctor2Email = doctor2Email;
+      user.doctor2CollegeFullName = doctor2CollegeFullName;
+      user.doctor2State = doctor2State;
+      user.doctor2City = doctor2City;
+      user.doctor2Pincode = doctor2Pincode;
+      user.sameCollege = sameCollege;
     }
 
     await user.save();

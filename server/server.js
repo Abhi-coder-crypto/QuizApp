@@ -6,6 +6,7 @@ const path = require('path');
 
 const authRoutes = require('./routes/auth');
 const quizRoutes = require('./routes/quiz');
+const adminRoutes = require('./routes/admin');
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(cors());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/quiz', quizRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Serve React build files
 app.use(express.static(path.join(__dirname, '../client/build')));

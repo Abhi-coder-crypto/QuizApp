@@ -3,6 +3,7 @@ import WelcomePage from './components/WelcomePage.js';
 import LoginForm from './components/LoginForm.js';
 import QuizPage from './components/QuizPage.js';
 import ResultPage from './components/ResultPage.js';
+import AdminPanel from './components/AdminPanel.js';
 import { getToken, checkStatus } from './api.js';
 import './styles.css';
 
@@ -14,6 +15,12 @@ export default function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (window.location.pathname === '/admin') {
+      setStage('admin');
+      setLoading(false);
+      return;
+    }
+
     async function verifySession() {
       const savedToken = getToken();
       if (savedToken) {
@@ -70,6 +77,10 @@ export default function App() {
         </div>
       </div>
     );
+  }
+
+  if (stage === 'admin') {
+    return <AdminPanel />;
   }
 
   return (
