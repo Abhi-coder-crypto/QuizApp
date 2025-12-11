@@ -1077,7 +1077,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: #e8f4fc;
+  background: linear-gradient(135deg, #e8f4fc 0%, #f0e6ff 100%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1087,10 +1087,21 @@ body {
 .admin-login-card {
   background: white;
   border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
   padding: 40px;
   width: 100%;
   max-width: 400px;
+}
+
+.admin-login-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.admin-logo {
+  max-width: 200px;
+  height: auto;
+  margin-bottom: 16px;
 }
 
 .admin-login-card h2 {
@@ -1106,7 +1117,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: #f3f4f6;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e8f4fc 100%);
   padding: 20px;
   overflow-y: auto;
 }
@@ -1118,6 +1129,21 @@ body {
   margin-bottom: 24px;
   flex-wrap: wrap;
   gap: 16px;
+  background: white;
+  padding: 16px 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.admin-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.admin-header-logo {
+  max-width: 120px;
+  height: auto;
 }
 
 .admin-header h1 {
@@ -1126,9 +1152,16 @@ body {
   margin: 0;
 }
 
+.admin-subtitle {
+  color: #6b7280;
+  font-size: 14px;
+  margin: 4px 0 0 0;
+}
+
 .admin-actions {
   display: flex;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .export-btn {
@@ -1146,6 +1179,23 @@ body {
 .export-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.refresh-btn {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.refresh-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
 .logout-btn {
@@ -1166,139 +1216,273 @@ body {
 
 .admin-stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 16px;
   margin-bottom: 24px;
 }
 
 .stat-card {
   background: white;
-  border-radius: 12px;
+  border-radius: 16px;
   padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
-.stat-card h3 {
-  color: #6b7280;
-  font-size: 14px;
-  font-weight: 500;
-  margin: 0 0 8px 0;
-}
-
-.stat-card p {
-  color: #1a1a2e;
+.stat-icon {
   font-size: 32px;
+}
+
+.stat-content h3 {
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 500;
+  margin: 0 0 4px 0;
+}
+
+.stat-content p {
+  color: #1a1a2e;
+  font-size: 28px;
   font-weight: 700;
   margin: 0;
 }
 
-.users-table-container {
+.stat-total {
+  border-left: 4px solid #667eea;
+}
+
+.stat-completed {
+  border-left: 4px solid #28a745;
+}
+
+.stat-pending {
+  border-left: 4px solid #ffc107;
+}
+
+.stat-avg {
+  border-left: 4px solid #764ba2;
+}
+
+.teams-container {
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  overflow-x: auto;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
-.users-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 1200px;
+.section-header {
+  color: #1a1a2e;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 20px 0;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e5e7eb;
 }
 
-.users-table th,
-.users-table td {
-  padding: 12px 16px;
-  text-align: left;
-  border-bottom: 1px solid #e5e7eb;
+.teams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
 }
 
-.users-table th {
+.team-card {
   background: #f8fafc;
-  color: #374151;
+  border-radius: 12px;
+  padding: 20px;
+  border: 2px solid #e5e7eb;
+  transition: all 0.2s ease;
+}
+
+.team-card:hover {
+  border-color: #667eea;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.team-card.completed {
+  border-left: 4px solid #28a745;
+}
+
+.team-card.pending {
+  border-left: 4px solid #ffc107;
+}
+
+.team-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.team-number {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.team-status {
+  padding: 4px 12px;
+  border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
-.users-table td {
-  color: #1a1a2e;
+.team-score-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.score-display-admin {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 4px;
+  color: white;
+  margin-bottom: 8px;
+}
+
+.score-value-admin {
+  font-size: 36px;
+  font-weight: 800;
+}
+
+.score-divider-admin {
+  font-size: 24px;
+  opacity: 0.7;
+}
+
+.score-total-admin {
+  font-size: 24px;
+  opacity: 0.7;
+}
+
+.score-details {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  color: white;
   font-size: 14px;
 }
 
-.users-table tbody tr:hover {
-  background: #f8fafc;
+.score-details .correct {
+  color: #a7f3d0;
 }
 
-.doctor-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+.score-details .wrong {
+  color: #fecaca;
 }
 
-.doctor-info strong {
+.score-details .time {
+  opacity: 0.9;
+}
+
+.doctors-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.doctor-card {
+  background: white;
+  border-radius: 10px;
+  padding: 14px;
+  border: 1px solid #e5e7eb;
+}
+
+.doctor-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #667eea;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.doctor-name {
+  font-size: 15px;
+  font-weight: 700;
   color: #1a1a2e;
+  margin-bottom: 8px;
 }
 
-.doctor-info small {
-  color: #6b7280;
+.doctor-detail {
   font-size: 12px;
-}
-
-.institute-info {
+  color: #6b7280;
+  margin-bottom: 4px;
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
 
-.institute-info small {
-  color: #6b7280;
+.detail-label {
+  font-weight: 500;
+  color: #9ca3af;
+}
+
+.institute-section {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #e5e7eb;
+}
+
+.institute-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.institute-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.institute-location {
   font-size: 12px;
+  color: #6b7280;
 }
 
-.same-college-badge {
+.same-college-badge-admin {
   background: #e8f4fc;
   color: #667eea;
   padding: 4px 8px;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
+  display: inline-block;
 }
 
-.badge-yes {
-  background: #ecfdf5;
-  color: #059669;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 600;
+.team-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #9ca3af;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
 }
 
-.badge-no {
-  background: #f3f4f6;
+.no-data {
+  text-align: center;
+  padding: 40px;
   color: #6b7280;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 16px;
 }
 
 .status-completed {
   background: #ecfdf5;
   color: #059669;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
 }
 
 .status-pending {
   background: #fff3cd;
   color: #856404;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
 }
 
 .loading {
@@ -1308,8 +1492,23 @@ body {
   font-size: 16px;
 }
 
+@media (max-width: 900px) {
+  .teams-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .doctors-container {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 768px) {
   .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-header-left {
     flex-direction: column;
     align-items: flex-start;
   }
@@ -1320,5 +1519,9 @@ body {
 
   .admin-actions button {
     flex: 1;
+  }
+  
+  .admin-stats {
+    grid-template-columns: 1fr 1fr;
   }
 }

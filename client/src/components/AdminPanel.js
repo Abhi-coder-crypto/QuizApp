@@ -97,7 +97,7 @@ function AdminPanel() {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'napcon_users_export.csv';
+      a.download = 'napcon_quiz_results.xlsx';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -114,11 +114,25 @@ function AdminPanel() {
     return `${mins}m ${secs}s`;
   }
 
+  function formatDate(dateString) {
+    if (!dateString) return '-';
+    return new Date(dateString).toLocaleDateString('en-IN', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
   if (!isLoggedIn) {
     return (
       <div className="admin-login-container">
         <div className="admin-login-card">
-          <h2>Admin Login</h2>
+          <div className="admin-login-header">
+            <img src="/napcon_logo.jpg" alt="NAPCON Logo" className="admin-logo" />
+            <h2>Admin Login</h2>
+          </div>
           <form onSubmit={handleLogin}>
             <div className="form-group">
               <label>Username</label>
@@ -126,6 +140,7 @@ function AdminPanel() {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                autoComplete="username"
                 required
               />
             </div>
@@ -135,6 +150,7 @@ function AdminPanel() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
                 required
               />
             </div>
@@ -148,13 +164,25 @@ function AdminPanel() {
     );
   }
 
+  const completedTeams = users.filter(u => u.hasCompletedQuiz);
+  const pendingTeams = users.filter(u => !u.hasCompletedQuiz);
+
   return (
     <div className="admin-container">
       <div className="admin-header">
-        <h1>NAPCON Admin Panel</h1>
+        <div className="admin-header-left">
+          <img src="/napcon_logo.jpg" alt="NAPCON Logo" className="admin-header-logo" />
+          <div>
+            <h1>NAPCON Admin Panel</h1>
+            <p className="admin-subtitle">PG Quiz Competition Management</p>
+          </div>
+        </div>
         <div className="admin-actions">
           <button className="export-btn" onClick={exportToExcel}>
-            Export to Excel (CSV)
+            Export to Excel (.xlsx)
+          </button>
+          <button className="refresh-btn" onClick={fetchUsers}>
+            Refresh
           </button>
           <button className="logout-btn" onClick={handleLogout}>
             Logout
@@ -163,102 +191,144 @@ function AdminPanel() {
       </div>
 
       <div className="admin-stats">
-        <div className="stat-card">
-          <h3>Total Registrations</h3>
-          <p>{totalUsers}</p>
+        <div className="stat-card stat-total">
+          <div className="stat-icon">👥</div>
+          <div className="stat-content">
+            <h3>Total Teams</h3>
+            <p>{totalUsers}</p>
+          </div>
         </div>
-        <div className="stat-card">
-          <h3>Quiz Completed</h3>
-          <p>{users.filter(u => u.hasCompletedQuiz).length}</p>
+        <div className="stat-card stat-completed">
+          <div className="stat-icon">✅</div>
+          <div className="stat-content">
+            <h3>Quiz Completed</h3>
+            <p>{completedTeams.length}</p>
+          </div>
         </div>
-        <div className="stat-card">
-          <h3>Pending</h3>
-          <p>{users.filter(u => !u.hasCompletedQuiz).length}</p>
+        <div className="stat-card stat-pending">
+          <div className="stat-icon">⏳</div>
+          <div className="stat-content">
+            <h3>Pending</h3>
+            <p>{pendingTeams.length}</p>
+          </div>
+        </div>
+        <div className="stat-card stat-avg">
+          <div className="stat-icon">📊</div>
+          <div className="stat-content">
+            <h3>Avg Score</h3>
+            <p>
+              {completedTeams.length > 0 
+                ? (completedTeams.reduce((acc, u) => acc + (u.score || 0), 0) / completedTeams.length).toFixed(1)
+                : '-'}
+            </p>
+          </div>
         </div>
       </div>
 
       {loading ? (
         <div className="loading">Loading...</div>
       ) : (
-        <div className="users-table-container">
-          <table className="users-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Doctor 1</th>
-                <th>Doctor 1 Institute</th>
-                <th>Doctor 2</th>
-                <th>Doctor 2 Institute</th>
-                <th>Same College</th>
-                <th>Status</th>
-                <th>Score</th>
-                <th>Time</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
+        <div className="teams-container">
+          <h2 className="section-header">Registered Teams ({totalUsers})</h2>
+          
+          {users.length === 0 ? (
+            <div className="no-data">No teams registered yet</div>
+          ) : (
+            <div className="teams-grid">
               {users.map((user, index) => (
-                <tr key={user.id}>
-                  <td>{index + 1}</td>
-                  <td>
-                    <div className="doctor-info">
-                      <strong>{user.doctor1Name}</strong>
-                      <small>{user.doctor1Qualification}</small>
-                      <small>{user.doctor1Email}</small>
-                      <small>{user.doctor1PhoneNumber}</small>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="institute-info">
-                      <span>{user.doctor1CollegeFullName}</span>
-                      <small>{user.doctor1City}, {user.doctor1State}</small>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="doctor-info">
-                      <strong>{user.doctor2Name}</strong>
-                      <small>{user.doctor2Qualification}</small>
-                      <small>{user.doctor2Email}</small>
-                      <small>{user.doctor2PhoneNumber}</small>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="institute-info">
-                      {user.sameCollege ? (
-                        <span className="same-college-badge">Same as Doctor 1</span>
-                      ) : (
-                        <>
-                          <span>{user.doctor2CollegeFullName}</span>
-                          <small>{user.doctor2City}, {user.doctor2State}</small>
-                        </>
-                      )}
-                    </div>
-                  </td>
-                  <td>
-                    <span className={user.sameCollege ? 'badge-yes' : 'badge-no'}>
-                      {user.sameCollege ? 'Yes' : 'No'}
-                    </span>
-                  </td>
-                  <td>
-                    <span className={user.hasCompletedQuiz ? 'status-completed' : 'status-pending'}>
+                <div key={user.id} className={`team-card ${user.hasCompletedQuiz ? 'completed' : 'pending'}`}>
+                  <div className="team-header">
+                    <span className="team-number">Team #{index + 1}</span>
+                    <span className={`team-status ${user.hasCompletedQuiz ? 'status-completed' : 'status-pending'}`}>
                       {user.hasCompletedQuiz ? 'Completed' : 'Pending'}
                     </span>
-                  </td>
-                  <td>
-                    {user.hasCompletedQuiz ? (
-                      <span>{user.score}/{user.totalQuestions}</span>
-                    ) : '-'}
-                  </td>
-                  <td>{formatTime(user.timeTaken)}</td>
-                  <td>
-                    {user.quizDate 
-                      ? new Date(user.quizDate).toLocaleDateString() 
-                      : new Date(user.createdAt).toLocaleDateString()}
-                  </td>
-                </tr>
+                  </div>
+
+                  {user.hasCompletedQuiz && (
+                    <div className="team-score-section">
+                      <div className="score-display-admin">
+                        <div className="score-value-admin">{user.score}</div>
+                        <div className="score-divider-admin">/</div>
+                        <div className="score-total-admin">{user.totalQuestions}</div>
+                      </div>
+                      <div className="score-details">
+                        <span className="correct">✓ {user.correctAnswers}</span>
+                        <span className="wrong">✗ {user.wrongAnswers}</span>
+                        <span className="time">⏱ {formatTime(user.timeTaken)}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="doctors-container">
+                    <div className="doctor-card">
+                      <div className="doctor-label">Doctor 1</div>
+                      <div className="doctor-name">{user.doctor1Name || '-'}</div>
+                      <div className="doctor-detail">
+                        <span className="detail-label">Qualification:</span>
+                        <span>{user.doctor1Qualification || '-'}</span>
+                      </div>
+                      <div className="doctor-detail">
+                        <span className="detail-label">Email:</span>
+                        <span>{user.doctor1Email || '-'}</span>
+                      </div>
+                      <div className="doctor-detail">
+                        <span className="detail-label">Phone:</span>
+                        <span>{user.doctor1PhoneNumber || '-'}</span>
+                      </div>
+                      <div className="institute-section">
+                        <div className="institute-label">Institute</div>
+                        <div className="institute-name">{user.doctor1CollegeFullName || '-'}</div>
+                        <div className="institute-location">
+                          {user.doctor1City || '-'}, {user.doctor1State || '-'}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="doctor-card">
+                      <div className="doctor-label">Doctor 2</div>
+                      <div className="doctor-name">{user.doctor2Name || '-'}</div>
+                      <div className="doctor-detail">
+                        <span className="detail-label">Qualification:</span>
+                        <span>{user.doctor2Qualification || '-'}</span>
+                      </div>
+                      <div className="doctor-detail">
+                        <span className="detail-label">Email:</span>
+                        <span>{user.doctor2Email || '-'}</span>
+                      </div>
+                      <div className="doctor-detail">
+                        <span className="detail-label">Phone:</span>
+                        <span>{user.doctor2PhoneNumber || '-'}</span>
+                      </div>
+                      <div className="institute-section">
+                        <div className="institute-label">Institute</div>
+                        {user.sameCollege ? (
+                          <div className="same-college-badge-admin">Same as Doctor 1</div>
+                        ) : (
+                          <>
+                            <div className="institute-name">{user.doctor2CollegeFullName || '-'}</div>
+                            <div className="institute-location">
+                              {user.doctor2City || '-'}, {user.doctor2State || '-'}
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="team-footer">
+                    <span className="registration-date">
+                      Registered: {formatDate(user.createdAt)}
+                    </span>
+                    {user.quizDate && (
+                      <span className="quiz-date">
+                        Quiz: {formatDate(user.quizDate)}
+                      </span>
+                    )}
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          )}
         </div>
       )}
     </div>

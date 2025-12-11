@@ -17,6 +17,7 @@ A full-stack quiz application built with React frontend and Express.js backend u
 - **Backend**: Express.js
 - **Database**: MongoDB (via Mongoose)
 - **Authentication**: JWT tokens
+- **Excel Export**: xlsx library
 
 ## Running the App
 The server runs on port 5000 and serves both the API endpoints and the built React frontend.
@@ -28,12 +29,27 @@ The server runs on port 5000 and serves both the API endpoints and the built Rea
 - `POST /api/quiz/submit` - Submit quiz answers (requires auth)
 - `POST /api/admin/login` - Admin login
 - `GET /api/admin/users` - Get all users (admin only)
-- `GET /api/admin/export` - Export users to CSV (admin only)
+- `GET /api/admin/export` - Export users to Excel .xlsx (admin only)
 
 ## Admin Panel
 Access the admin panel at `/admin` route.
 - Default credentials: Napcon / Napcon@123
-- Features: View all registered users, export to CSV/Excel
+- Features:
+  - NAPCON logo in header
+  - Statistics cards (Total Teams, Completed, Pending, Average Score)
+  - Team cards showing both doctors with their details and scores
+  - Export to Excel (.xlsx) with proper formatting and summary sheet
+  - Rate limiting (5 attempts, 15 min lockout)
+
+## Vercel Deployment
+The app is configured for Vercel deployment:
+1. Set environment variables in Vercel dashboard:
+   - MONGO_URI - MongoDB connection string
+   - JWT_SECRET - JWT signing secret
+   - ADMIN_JWT_SECRET - Admin JWT secret
+   - ADMIN_USERNAME - Admin username
+   - ADMIN_PASSWORD - Admin password
+2. Deploy using `vercel` CLI or connect GitHub repo
 
 ## Environment Variables
 - `MONGO_URI` - MongoDB connection string (required for full functionality)
@@ -44,8 +60,16 @@ Access the admin panel at `/admin` route.
 - `ADMIN_JWT_SECRET` - Separate JWT secret for admin tokens
 
 ## Recent Changes
+- 2025-12-11: Enhanced Admin Panel UI and Excel Export
+  - Added NAPCON logo to admin panel header and login
+  - Redesigned admin panel with card-based team layout
+  - Each team card shows both doctors with their details and scores
+  - Added statistics cards with icons (Total Teams, Completed, Pending, Avg Score)
+  - Changed export from CSV to .xlsx format with proper formatting
+  - Excel export includes summary sheet with statistics
+  - Made app Vercel-deployable with updated vercel.json
 - 2025-12-11: Added Admin Panel and Institute Details per Doctor
-  - Created Admin Panel at /admin with login, user data view, and CSV export
+  - Created Admin Panel at /admin with login, user data view, and export
   - Updated LoginForm with separate institute details for Doctor 1 and Doctor 2
   - Added "Same College" checkbox - when checked, Doctor 2's institute fields are marked as "NA"
   - Added rate limiting to admin login (5 attempts, 15 min lockout)
