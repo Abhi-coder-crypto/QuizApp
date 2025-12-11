@@ -1,0 +1,14 @@
+{
+  "name": "quiz-app",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "cross-env": "^10.1.0"
+  },
+  "scripts": {
+  "dev": "concurrently \"npm start --prefix client\" \"npm start --prefix server\"",
+  "build": "npm run build --prefix client",
+  "start": "npm start --prefix server"
+}
+}
