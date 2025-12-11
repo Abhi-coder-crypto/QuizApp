@@ -15,7 +15,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (window.location.pathname === '/admin') {
+    if (window.location.pathname.toLowerCase() === '/admin') {
       setStage('admin');
       setLoading(false);
       return;
