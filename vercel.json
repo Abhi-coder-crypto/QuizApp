@@ -6,29 +6,26 @@
       "use": "@vercel/node"
     },
     {
-      "src": "client/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build"
-      }
+      "src": "client/build/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "server/server.js"
+      "dest": "/server/server.js"
     },
     {
       "src": "/static/(.*)",
-      "dest": "client/build/static/$1"
+      "dest": "/client/build/static/$1"
     },
     {
-      "src": "/(.*\\.(js|css|ico|png|jpg|jpeg|svg|json|txt|map))",
-      "dest": "client/build/$1"
+      "src": "/(.*\\.(?:js|css|ico|png|jpg|jpeg|svg|json|txt|map))$",
+      "dest": "/client/build/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "client/build/index.html"
+      "dest": "/client/build/index.html"
     }
   ]
 }
