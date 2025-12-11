@@ -165,7 +165,6 @@ function AdminPanel() {
   }
 
   const completedTeams = users.filter(u => u.hasCompletedQuiz);
-  const pendingTeams = users.filter(u => !u.hasCompletedQuiz);
 
   return (
     <div className="admin-container">
@@ -203,13 +202,6 @@ function AdminPanel() {
           <div className="stat-content">
             <h3>Quiz Completed</h3>
             <p>{completedTeams.length}</p>
-          </div>
-        </div>
-        <div className="stat-card stat-pending">
-          <div className="stat-icon">⏳</div>
-          <div className="stat-content">
-            <h3>Pending</h3>
-            <p>{pendingTeams.length}</p>
           </div>
         </div>
         <div className="stat-card stat-avg">
