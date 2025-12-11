@@ -6,7 +6,11 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+<<<<<<< HEAD
     "react-scripts": "^5.0.1"
+=======
+    "react-scripts": "5.0.1"
+>>>>>>> 8cdfd016ca582f6ac8ec53a9432fa8bb490dbc9f
   },
   "devDependencies": {
     "cross-env": "^10.1.0"
