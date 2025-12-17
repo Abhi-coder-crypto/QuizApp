@@ -140,14 +140,14 @@ function LoginForm({ onLogin }) {
             </div>
 
             <div className="form-group">
-              <label>Specialty <span className="required">*</span></label>
+              <label>Qualification <span className="required">*</span></label>
                 <select
                   name="qualification"
                   value={doctor1.qualification}
                   onChange={updateDoctor1}
                   required
                 >
-                  <option value="">Select specialty</option>
+                  <option value="">Select qualification</option>
                   <option value="MD">MD</option>
                   <option value="DNB">DNB</option>
                   <option value="DIPLOMA">DIPLOMA</option>
@@ -235,14 +235,14 @@ function LoginForm({ onLogin }) {
             </div>
 
             <div className="form-group">
-              <label>Specialty <span className="required">*</span></label>
+              <label>Qualification <span className="required">*</span></label>
                 <select
                   name="qualification"
                   value={doctor2.qualification}
                   onChange={updateDoctor2}
                   required
                 >
-                  <option value="">Select specialty</option>
+                  <option value="">Select qualification</option>
                   <option value="MD">MD</option>
                   <option value="DNB">DNB</option>
                   <option value="DIPLOMA">DIPLOMA</option>
