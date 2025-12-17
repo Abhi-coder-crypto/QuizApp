@@ -140,7 +140,7 @@ function LoginForm({ onLogin }) {
             </div>
 
             <div className="form-group">
-                <label>Specialty <span className="required">*</span></label>
+              <label>Specialty <span className="required">*</span></label>
                 <select
                   name="qualification"
                   value={doctor1.qualification}
@@ -148,10 +148,11 @@ function LoginForm({ onLogin }) {
                   required
                 >
                   <option value="">Select specialty</option>
-                  <option value="Pulmonologist">Pulmonologist</option>
+                  <option value="MD">MD</option>
+                  <option value="DNB">DNB</option>
+                  <option value="DIPLOMA">DIPLOMA</option>
                 </select>
             </div>
-
 
             <div className="form-group">
               <label>Phone Number <span className="required">*</span></label>
@@ -234,7 +235,7 @@ function LoginForm({ onLogin }) {
             </div>
 
             <div className="form-group">
-                <label>Specialty <span className="required">*</span></label>
+              <label>Specialty <span className="required">*</span></label>
                 <select
                   name="qualification"
                   value={doctor2.qualification}
@@ -242,10 +243,11 @@ function LoginForm({ onLogin }) {
                   required
                 >
                   <option value="">Select specialty</option>
-                  <option value="Pulmonologist">Pulmonologist</option>
+                  <option value="MD">MD</option>
+                  <option value="DNB">DNB</option>
+                  <option value="DIPLOMA">DIPLOMA</option>
                 </select>
             </div>
-
 
             <div className="form-group">
               <label>Phone Number <span className="required">*</span></label>
