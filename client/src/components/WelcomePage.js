@@ -14,7 +14,7 @@ function WelcomePage({ onNext }) {
 
         <h2 className="register-title">Team Registration for PG Quiz!</h2>
         <p className="eligibility">
-          <strong>Eligibility Criteria:</strong> Pulmonologist <strong>(PG students)</strong>
+          <strong>Eligibility Criteria:</strong> MD/DNB/Diploma respiratory diseases <strong>(PG students)</strong>
         </p>
         <p className="team-note-main">Each team will be composed of two PGs from same institute</p>
 
