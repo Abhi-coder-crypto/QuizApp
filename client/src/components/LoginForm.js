@@ -143,9 +143,7 @@ function LoginForm({ onLogin }) {
               <label>Qualification <span className="required">*</span></label>
               <select name="qualification" value={doctor1.qualification} onChange={updateDoctor1} required>
                 <option value="">Select qualification</option>
-                <option value="MD">MD</option>
-                <option value="DNB">DNB</option>
-                <option value="Diploma">Diploma</option>
+                <option value="Pulmonary">MD</option>
               </select>
             </div>
 
